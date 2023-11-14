@@ -1,0 +1,49 @@
+name: Jeedom OS Build
+
+on:  
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04   
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - uses: actions/checkout@v2
+      - 
+        name: Get the version (git tag)
+        id: get_version
+        run: |
+          echo ${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - 
+        name: 🖥️ Install pi-gen required dependencies
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update --fix-missing
+          sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
+      - 
+        name: 🍓 Building Raspberry image
+        run: |
+          sudo CLEAN=1 BUILD_VERSION=${{ steps.get_version.outputs.VERSION }} ./build.sh -c config
+      - 
+        name: ✔️ Check prepared images
+        run: |
+          ls -al ./deploy
+          test -f ./deploy/image_jeedom-os-rpi.zip
+      - 
+        name: 🏷️ Rename files for release
+        run: |
+          sudo mv ./deploy/jeedom-os-rpi.info ./jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.info
+          sudo mv ./deploy/image_jeedom-os-rpi.zip ./jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.zip
+      - 
+        name: 📦 Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.info
+            jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.zip
