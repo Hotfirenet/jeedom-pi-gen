@@ -15,28 +15,26 @@ jobs:
     if: "! contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v2
-      - 
-        name: 🖥️ Install pi-gen required dependencies
+      - name: 🖥️ Install pi-gen required dependencies
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update --fix-missing
           sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
-      - 
-        name: 🍓 Building Raspberry image
+      - name: Build Image
         run: |
+          sudo ls -al
           sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
-      - 
-        name: ✔️ Check prepared images
+      - name: Check prepared images
         run: |
           ls -al ./deploy
           test -f ./deploy/image_jeedom-os-rpi.zip
       - 
-        name: 🏷️ Rename files for release
+        name: Rename files for release
         run: |
           sudo mv ./deploy/jeedom-os-rpi.info ./jeedom-os-rpi-${{ github.event.inputs.version }}.info
           sudo mv ./deploy/image_jeedom-os-rpi.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
       - 
-        name: 📦 Release
+        name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
