@@ -1,6 +1,5 @@
 IMG_DATE="jeedom-os"
 IMG_NAME="rpi"
-USE_QEMU=0
 TARGET_HOSTNAME='jeedomRPI'
 ENABLE_SSH=1
 FIRST_USER_NAME='jeedom'
@@ -9,4 +8,3 @@ KEYBOARD_KEYMAP='fr'
 TIMEZONE_DEFAULT='Europe/Paris'
 STAGE_LIST='stage0 stage1 stage2'
 RELEASE=bullseye
-DEPLOY_COMPRESSION=zip

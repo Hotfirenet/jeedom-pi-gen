@@ -16,12 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - 
-        name: Get the version (git tag)
-        id: get_version
-        run: |
-          echo ${GITHUB_REF/refs\/tags\//}
-          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - 
         name: 🖥️ Install pi-gen required dependencies
         run: |
           sudo dpkg --add-architecture i386
@@ -30,7 +24,7 @@ jobs:
       - 
         name: 🍓 Building Raspberry image
         run: |
-          sudo CLEAN=1 BUILD_VERSION=${{ steps.get_version.outputs.VERSION }} ./build.sh -c config
+          sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
       - 
         name: ✔️ Check prepared images
         run: |
@@ -39,8 +33,8 @@ jobs:
       - 
         name: 🏷️ Rename files for release
         run: |
-          sudo mv ./deploy/jeedom-os-rpi.info ./jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.info
-          sudo mv ./deploy/image_jeedom-os-rpi.zip ./jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.zip
+          sudo mv ./deploy/jeedom-os-rpi.info ./jeedom-os-rpi-${{ github.event.inputs.version }}.info
+          sudo mv ./deploy/image_jeedom-os-rpi.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
       - 
         name: 📦 Release
         uses: softprops/action-gh-release@v1
@@ -48,5 +42,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.info
-            jeedom-os-rpi-${{ steps.get_version.outputs.VERSION }}.zip
+            jeedom-os-rpi-${{ github.event.inputs.version }}.info
+            jeedom-os-rpi-${{ github.event.inputs.version }}.zip
