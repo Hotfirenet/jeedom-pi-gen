@@ -1,6 +1,12 @@
 name: Jeedom OS Build
+run-name: Create Raspbian Jeedom Image ${{ github.event.inputs.version }}
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version / Tag (vx.x.x):'     
+        required: true
 
 jobs:
   build:
