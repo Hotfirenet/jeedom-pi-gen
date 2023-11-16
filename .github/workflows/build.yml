@@ -25,7 +25,7 @@ jobs:
           sudo ls -al
           sudo pwd
           sudo ls /home/runner/work/jeedom-pi-gen/jeedom-pi-gen
-          sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c test
+          sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c /home/runner/work/jeedom-pi-gen/jeedom-pi-gen/test
       - name: Check prepared images
         run: |
           ls -al ./deploy
