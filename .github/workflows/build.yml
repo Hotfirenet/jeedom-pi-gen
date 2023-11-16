@@ -23,6 +23,8 @@ jobs:
       - name: Build Image
         run: |
           sudo ls -al
+          sudo pwd
+          sudo cat config
           sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
       - name: Check prepared images
         run: |
