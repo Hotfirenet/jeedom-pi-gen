@@ -15,15 +15,13 @@ jobs:
     if: "! contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v2
-      - name: 🖥️ Install pi-gen required dependencies
+      - name: Install pi-gen required dependencies
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update --fix-missing
           sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
       - name: Build Image
         run: |
-          sudo find ./ -name "*.sh" -exec chmod a+x {} \
-          
           sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
       - name: Check prepared images
         run: |
