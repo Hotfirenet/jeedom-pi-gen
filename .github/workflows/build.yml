@@ -24,7 +24,7 @@ jobs:
         run: |
           sudo ls -al
           sudo pwd
-          sudo cat config
+          sudo cat /home/runner/work/jeedom-pi-gen/jeedom-pi-gen/config
           sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
       - name: Check prepared images
         run: |
