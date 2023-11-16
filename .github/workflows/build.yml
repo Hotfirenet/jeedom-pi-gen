@@ -24,8 +24,7 @@ jobs:
           sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx gpg pigz
       - name: Build Image
         run: |
-          sudo chmod 777 config
-          sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c config
+          sudo CLEAN=1 BUILD_VERSION=${{ github.event.inputs.version }} ./build.sh -c ./config
       - name: Check prepared images
         run: |
           ls -al ./deploy
