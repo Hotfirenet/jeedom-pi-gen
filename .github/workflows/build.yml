@@ -36,10 +36,11 @@ jobs:
           sudo mv ./deploy/image_jeedom-os-rpi-lite.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
       - 
         name: Release
-        uses: AButler/upload-release-assets@v2.0.2
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: |
             jeedom-os-rpi-${{ github.event.inputs.version }}.info
             jeedom-os-rpi-${{ github.event.inputs.version }}.zip
 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{  github.event.inputs.version }}
