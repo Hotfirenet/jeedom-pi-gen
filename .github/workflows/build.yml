@@ -43,4 +43,3 @@ jobs:
             jeedom-os-rpi-${{ github.event.inputs.version }}.zip
 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${{ github.event.inputs.version }}
