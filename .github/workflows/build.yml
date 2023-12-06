@@ -28,12 +28,12 @@ jobs:
       - name: Check prepared images
         run: |
           ls -al ./deploy
-          test -f ./deploy/image_jeedom-os-rpi.zip
+          test -f ./deploy/image_jeedom-os-rpi-lite.zip
       - 
         name: Rename files for release
         run: |
-          sudo mv ./deploy/jeedom-os-rpi.info ./jeedom-os-rpi-${{ github.event.inputs.version }}.info
-          sudo mv ./deploy/image_jeedom-os-rpi.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
+          sudo mv ./deploy/jeedom-os-rpi-lite.info ./jeedom-os-rpi-${{ github.event.inputs.version }}.info
+          sudo mv ./deploy/image_jeedom-os-rpi-lite.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
       - 
         name: Release
         uses: softprops/action-gh-release@v1
