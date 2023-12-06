@@ -17,6 +17,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
+      - 
+        name: Get the version (git tag)
+        id: get_version
+        run: |
+          echo ${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          
       - name: Install pi-gen required dependencies
         run: |
           sudo dpkg --add-architecture i386
@@ -44,11 +51,10 @@ jobs:
           git push origin ${{ github.event.inputs.version }}
       - 
         name: Release
-        uses: AButler/upload-release-assets@v3.0
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
             jeedom-os-rpi-${{ github.event.inputs.version }}.info
             jeedom-os-rpi-${{ github.event.inputs.version }}.zip
-
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${{ github.event.inputs.version }}
