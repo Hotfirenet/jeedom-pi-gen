@@ -34,6 +34,14 @@ jobs:
         run: |
           sudo mv ./deploy/jeedom-os-rpi-lite.info ./jeedom-os-rpi-${{ github.event.inputs.version }}.info
           sudo mv ./deploy/image_jeedom-os-rpi-lite.zip ./jeedom-os-rpi-${{ github.event.inputs.version }}.zip
+
+      - 
+        name: Push Git Tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
       - 
         name: Release
         uses: AButler/upload-release-assets@v3.0
