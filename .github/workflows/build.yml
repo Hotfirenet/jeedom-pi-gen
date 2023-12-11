@@ -45,14 +45,10 @@ jobs:
       - 
         name: Push Git Tag
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git tag ${{ github.event.inputs.version }}
-          git push origin ${{ github.event.inputs.version }}
           ls -lah
       - 
         name: Release
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.inputs.version }}
-          path: ${{ github.event.inputs.version }}/jeedom-os-rpi-${{ github.event.inputs.version }}.zip
+          path: jeedom-os-rpi-${{ github.event.inputs.version }}.zip
