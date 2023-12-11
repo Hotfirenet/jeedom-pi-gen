@@ -49,12 +49,10 @@ jobs:
           git config user.email "github-actions@users.noreply.github.com"
           git tag ${{ github.event.inputs.version }}
           git push origin ${{ github.event.inputs.version }}
+          ls -lah
       - 
         name: Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-artifact@v3
         with:
-          files: |
-            jeedom-os-rpi-${{ github.event.inputs.version }}.info
-            jeedom-os-rpi-${{ github.event.inputs.version }}.zip
+          name: ${{ github.event.inputs.version }}
+          path: ${{ github.event.inputs.version }}/jeedom-os-rpi-${{ github.event.inputs.version }}.zip
